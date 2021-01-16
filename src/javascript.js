@@ -57,6 +57,15 @@ function ProcessExcel(data, cb) {
 
 function tablahtml(excelRows) {
 
+  let fila = document.getElementById("fila").value
+
+  if(fila != ''){
+    if(fila >= 2) fila -= 2
+    else fila = 0
+
+    excelRows = [].concat(excelRows[fila])
+  }
+
   //Create a HTML Table element.
   var table = document.createElement("table");
   table.border = "2";

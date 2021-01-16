@@ -11,24 +11,48 @@
 
 <script type="application/javascript" src="src/javascript.js"></script>
 <script type="application/javascript" src="src/xlsx.full.min.js"></script>
-<!--
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
--->
+
 <body>
   <div class="center">
+
     <h1>COVEXCEL </h1>
-    <p1>Servicio de carga y analisis de planillas sobre casos de covid</p1>
-    <p2>(¡experimental!, solo datos obtenidos en Puerto Madryn)</p2>
-
-    <p3>
+    <p1>Servicio de agrupado de datos para planillas de casos covid
+      (solo datos de Puerto Madryn)</p1>
+    <div>
+      <label>Selecciona el archivo para procesar</label>
       <input type="file" id="fileUpload" />
-      <input type="button" id="upload" value="Upload" onclick="Upload()" />
-    </p3>
-
-    <hr />
-    <div id="dvExcel"></div>
-
+    </div>
+    <div>
+      <label>Fila (ficha) a procesar</label>
+      <input type="number" id="fila" min="2">
+    </div>
+    <div>
+      <input type="button" value="Ejecutar" onclick="Upload()" />
+    </div>
   </div>
+
+  <div class="row">
+    <div class="column" style="background-color:#aab;">
+      <h2>Column 1</h2>
+      <p>Some text..</p>
+    </div>
+    <div class="column" style="background-color:#aba;">
+      <h2>Column 2</h2>
+      <p>Some text..</p>
+    </div>
+    <div class="column" style="background-color:#bab">
+      <h2>Column 3</h2>
+      <p>Someeryime sadness..</p>
+    </div>
+    <div class="column" style="background-color:#abb;">
+      <h2>Column 4</h2>
+      <p>Someeryime sadness..</p>
+    </div>
+  </div>
+
+  <hr />
+  <div id="dvExcel"></div>
+
 </body>
 
 </html>
