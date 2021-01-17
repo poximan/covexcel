@@ -6,7 +6,7 @@
 
 <head>
   <link rel="stylesheet" type="text/css" href="src/styles.css">
-  <title>My Website</title>
+  <title>covexcel</title>
 </head>
 
 <script type="application/javascript" src="src/javascript.js"></script>
@@ -17,40 +17,35 @@
 
     <h1>COVEXCEL </h1>
     <p1>Servicio de agrupado de datos para planillas de casos covid
-      (solo datos de Puerto Madryn)</p1>
-    <div>
-      <label>Selecciona el archivo para procesar</label>
-      <input type="file" id="fileUpload" />
-    </div>
-    <div>
-      <label>Fila (ficha) a procesar</label>
-      <input type="number" id="fila" min="2">
-    </div>
-    <div>
-      <input type="button" value="Ejecutar" onclick="Upload()" />
+      (ensayos en modelo planilla Puerto Madryn)</p1>
+    <div class=testo>
+      <div>
+        <label>Selecciona el archivo para procesar</label>
+        <input type="file" id="fileUpload" />
+      </div>
+      <div>
+        <label>Fila (ficha) a procesar</label>
+        <input type="number" id="fila" min="2">
+        <input type="button" value="Ejecutar" onclick="Upload()" />
+      </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="column" style="background-color:#aab;">
-      <h2>Column 1</h2>
-      <p>Some text..</p>
+    <div id=ciudadano class="column" style="background-color:navajowhite;">
+      <h2>Ciudadano</h2>
     </div>
-    <div class="column" style="background-color:#aba;">
-      <h2>Column 2</h2>
-      <p>Some text..</p>
+    <div id=evento class="column" style="background-color:antiquewhite;">
+      <h2>Evento</h2>
     </div>
-    <div class="column" style="background-color:#bab">
-      <h2>Column 3</h2>
-      <p>Someeryime sadness..</p>
+    <div id=clinica class="column" style="background-color:wheat">
+      <h2>Clinica</h2>
     </div>
-    <div class="column" style="background-color:#abb;">
-      <h2>Column 4</h2>
-      <p>Someeryime sadness..</p>
+    <div id=epidemiologia class="column" style="background-color:moccasin;">
+      <h2>Epidemiologia</h2>
     </div>
   </div>
 
-  <hr />
   <div id="dvExcel"></div>
 
 </body>
