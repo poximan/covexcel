@@ -125,6 +125,7 @@ function cargarColumnas(fila) {
   })
 
   const arr_nombres = valorCelda("ak" + fila).split("\n\n");
+  //arr_nombres = arr_nombres.concat(valorCelda("ad" + fila).split("\n\n").filter(x => x === "Si"))
   const arr_edades = valorCelda("al" + fila).split("\n\n");
   const arr_relaciones = valorCelda("am" + fila).split("\n\n");
 
@@ -134,13 +135,20 @@ function cargarColumnas(fila) {
     arr_nombres[0] != ''
   ){
     for (var i = 0; i < arr_nombres.length; i++)
-    ciudadano.push({
-      nombre: `conviviente ${i+1} -> ${arr_relaciones[i]}`, // relacion      
-      valor: arr_nombres[i] + `, ${arr_edades[i]} años`
-    })
+      ciudadano.push({
+        nombre: `conviviente ${i+1} -> ${arr_relaciones[i]}`, // relacion
+        valor: arr_nombres[i] + `, ${arr_edades[i]} años`
+      })
   }
 
   const element_ciudadano = document.getElementById("ciudadano");
+
+  element_ciudadano.innerHTML = ""
+  var tag = document.createElement("h2");
+  var text = document.createTextNode("Ciudadano");
+  tag.appendChild(text);
+  element_ciudadano.appendChild(tag);
+
   ciudadano.forEach(datos => {
     var tag = document.createElement("p");
     var text = document.createTextNode(datos.nombre + ": " + datos.valor);
@@ -160,6 +168,13 @@ function cargarColumnas(fila) {
   })
 
   const element_evento = document.getElementById("evento");
+
+  element_evento.innerHTML = ""
+  var tag = document.createElement("h2");
+  var text = document.createTextNode("Evento");
+  tag.appendChild(text);
+  element_evento.appendChild(tag);
+
   evento.forEach(datos => {
     var tag = document.createElement("p");
     var text = document.createTextNode(datos.nombre + ": " + datos.valor);
@@ -177,18 +192,29 @@ function cargarColumnas(fila) {
     nombre: "fecha sintomas",
     valor: valorCelda("w" + fila)
   })
+
   const arr_sintomas= valorCelda("u" + fila).split("\n");
   for (var i = 0; i < arr_sintomas.length; i++)
-  clinica.push({
-    nombre: `sintoma ${i+1}`,
-    valor: arr_sintomas[i]
-  })
-  clinica.push({
-    nombre: "comorbilidades",
-    valor: valorCelda("x" + fila)
-  })
+    clinica.push({
+      nombre: `sintoma ${i+1}`,
+      valor: arr_sintomas[i]
+    })
+
+  const arr_comorbilidades = valorCelda("x" + fila).split("\n");
+  for (var i = 0; i < arr_comorbilidades.length; i++)
+    clinica.push({
+      nombre: `comorbilidad ${i+1}`,
+      valor: arr_comorbilidades[i]
+    })
 
   const element_clinica = document.getElementById("clinica");
+
+  element_clinica.innerHTML = ""
+  var tag = document.createElement("h2");
+  var text = document.createTextNode("Clinica");
+  tag.appendChild(text);
+  element_clinica.appendChild(tag);
+
   clinica.forEach(datos => {
     var tag = document.createElement("p");
     var text = document.createTextNode(datos.nombre + ": " + datos.valor);
