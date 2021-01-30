@@ -1,6 +1,9 @@
 let workbook
 let firstSheet
 
+const SIN_DATO = "SIN_DATO"
+const COLUMNAS = ["ciudadano","evento","clinica","epidemiologia"]
+
 function Upload() {
   //Reference the FileUpload element.
   var fileUpload = document.getElementById("fileUpload");
@@ -19,32 +22,20 @@ function Upload() {
           })
         };
         reader.readAsBinaryString(fileUpload.files[0]);
-      } else {
-        //For IE Browser.
-        reader.onload = function(e) {
-          var data = "";
-          var bytes = new Uint8Array(e.target.result);
-          for (var i = 0; i < bytes.byteLength; i++) {
-            data += String.fromCharCode(bytes[i]);
-          }
-          ProcessExcel(data, (excelRows) => {
-            tablahtml(excelRows)
-          })
-        };
-        reader.readAsArrayBuffer(fileUpload.files[0]);
       }
     } else {
-      alert("This browser does not support HTML5.");
+      alert("Este navegador no soporta HTML5.");
     }
   } else {
-    alert("Please upload a valid Excel file.");
+    alert("Por favor cargue una planilla valida.");
   }
 };
 
 function ProcessExcel(data, cb) {
   //Read the Excel File data.
   workbook = XLSX.read(data, {
-    type: 'binary'
+    type: 'binary',
+    dateNF: "DD-MM-YYYY"
   });
   //Fetch the name of First Sheet.
   firstSheet = workbook.SheetNames[0];
@@ -59,9 +50,11 @@ function ProcessExcel(data, cb) {
 
 function tablahtml(excelRows) {
 
+  limpiarColumnas()
+
   let fila = document.getElementById("fila").value
 
-  if (fila != '') {
+  if (fila != '' && fila > 1) {
     if (fila >= 2) fila -= 2
     else fila = 0
 
@@ -105,127 +98,164 @@ function tablahtml(excelRows) {
 
 function cargarColumnas(fila) {
 
-  // datos solapa ciudadano
-  let ciudadano = []
-  ciudadano.push({
+  const ciudadano = datosCiudadano(fila)
+  cargarDatos(ciudadano, COLUMNAS[0])
+
+  const evento = datosEvento(fila)
+  cargarDatos(evento, COLUMNAS[1])
+
+  const clinica = datosClinica(fila)
+  cargarDatos(clinica, COLUMNAS[2])
+
+  const epidemiologia = datosEpidemiologia(fila)
+  cargarDatos(epidemiologia, COLUMNAS[3])
+}
+
+function datosCiudadano(fila) {
+
+  let datos = []
+  datos.push({
     nombre: "dni",
     valor: valorCelda("e" + fila) + ` (apynom: ${valorCelda("c"+fila)}, ${valorCelda("b"+fila)})`
   })
-  ciudadano.push({
+  datos.push({
     nombre: "telefono",
     valor: valorCelda("j" + fila)
   })
-  ciudadano.push({
+  datos.push({
     nombre: "email",
     valor: valorCelda("k" + fila)
   })
-  ciudadano.push({
+  datos.push({
     nombre: "domicilio",
     valor: valorCelda("l" + fila) + ", barrio " + valorCelda("m" + fila)
   })
 
-  const arr_nombres = valorCelda("ak" + fila).split("\n\n");
+  const arr_nombres = valorCelda("ak" + fila).split("\r\n\r\n");
   //arr_nombres = arr_nombres.concat(valorCelda("ad" + fila).split("\n\n").filter(x => x === "Si"))
-  const arr_edades = valorCelda("al" + fila).split("\n\n");
-  const arr_relaciones = valorCelda("am" + fila).split("\n\n");
+  const arr_edades = valorCelda("al" + fila).split("\r\n\r\n");
+  const arr_relaciones = valorCelda("am" + fila).split("\r\n\r\n");
 
   if(
     (arr_nombres.length === arr_edades.length) &&
     (arr_nombres.length === arr_relaciones.length) &&
     arr_nombres[0] != ''
   ){
-    for (var i = 0; i < arr_nombres.length; i++)
-      ciudadano.push({
-        nombre: `conviviente ${i+1} -> ${arr_relaciones[i]}`, // relacion
+    for (var i = 0; i < arr_nombres.length; i++){
+      datos.push({
+        nombre: `conviv. ${i+1} -> ${arr_relaciones[i]}`, // relacion
         valor: arr_nombres[i] + `, ${arr_edades[i]} años`
       })
+    }
   }
+  return datos
+}
 
-  const element_ciudadano = document.getElementById("ciudadano");
+function datosEvento(fila) {
 
-  element_ciudadano.innerHTML = ""
-  var tag = document.createElement("h2");
-  var text = document.createTextNode("Ciudadano");
-  tag.appendChild(text);
-  element_ciudadano.appendChild(tag);
-
-  ciudadano.forEach(datos => {
-    var tag = document.createElement("p");
-    var text = document.createTextNode(datos.nombre + ": " + datos.valor);
-    tag.appendChild(text);
-    element_ciudadano.appendChild(tag);
-  });
-
-  // datos solapa evento
-  let evento = []
-  evento.push({
+  let datos = []
+  datos.push({
     nombre: "fecha papel",
-    valor: valorCelda("bc" + fila)
+    valor: valorCeldaFecha("bc" + fila)
   })
-  evento.push({
+  datos.push({
     nombre: "fecha nexo",
-    valor: valorCelda("af" + fila)
+    valor: valorCeldaFecha("af" + fila)
   })
+  datos.push({
+    nombre: "¿contacto COVID+ ult.15 dias?",
+    valor: (valorCelda("ac" + fila) === "Si")? "si" : "no. comunitario"
+  })
+  return datos
+}
 
-  const element_evento = document.getElementById("evento");
+function datosClinica(fila) {
 
-  element_evento.innerHTML = ""
-  var tag = document.createElement("h2");
-  var text = document.createTextNode("Evento");
-  tag.appendChild(text);
-  element_evento.appendChild(tag);
-
-  evento.forEach(datos => {
-    var tag = document.createElement("p");
-    var text = document.createTextNode(datos.nombre + ": " + datos.valor);
-    tag.appendChild(text);
-    element_evento.appendChild(tag);
-  });
-
-  // datos solapa clinica
-  let clinica = []
-  clinica.push({
+  let datos = []
+  datos.push({
     nombre: "fecha consulta",
-    valor: evento[0].valor
+    valor: valorCeldaFecha("bc" + fila)
   })
-  clinica.push({
+  datos.push({
     nombre: "fecha sintomas",
-    valor: valorCelda("w" + fila)
+    valor: valorCeldaFecha("w" + fila)
   })
 
   const arr_sintomas= valorCelda("u" + fila).split("\n");
   for (var i = 0; i < arr_sintomas.length; i++)
-    clinica.push({
-      nombre: `sintoma ${i+1}`,
+    datos.push({
+      nombre: `sint.${i+1}`,
       valor: arr_sintomas[i]
     })
 
   const arr_comorbilidades = valorCelda("x" + fila).split("\n");
-  for (var i = 0; i < arr_comorbilidades.length; i++)
-    clinica.push({
-      nombre: `comorbilidad ${i+1}`,
+  for (var i = 0; i < arr_comorbilidades.length; i++){
+    datos.push({
+      nombre: `comorb.${i+1}`,
       valor: arr_comorbilidades[i]
     })
+  }
+  return datos
+}
 
-  const element_clinica = document.getElementById("clinica");
+function datosEpidemiologia(fila) {
+  let datos = []
+  return datos
+}
 
-  element_clinica.innerHTML = ""
-  var tag = document.createElement("h2");
-  var text = document.createTextNode("Clinica");
-  tag.appendChild(text);
-  element_clinica.appendChild(tag);
+let limpiarColumnas = () => {
 
-  clinica.forEach(datos => {
-    var tag = document.createElement("p");
-    var text = document.createTextNode(datos.nombre + ": " + datos.valor);
+  COLUMNAS.forEach(titulo => {
+    const element = document.getElementById(titulo);
+    element.innerHTML = "";
+    var tag = document.createElement("h2");
+    var text = document.createTextNode(letraCapital(titulo));
     tag.appendChild(text);
-    element_clinica.appendChild(tag);
+    element.appendChild(tag);
   });
 }
 
-function valorCelda(coordenada) {
+let letraCapital = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+let cargarDatos = (datos, columna) => {
+
+  const element = document.getElementById(columna);
+
+  datos.forEach(dato => {
+    var tag = document.createElement("p");
+    var text = document.createTextNode(dato.nombre + ": " + dato.valor);
+    tag.appendChild(text);
+    element.appendChild(tag);
+  });
+}
+
+let valorCelda = (coordenada) => {
   const celda = workbook.Sheets[firstSheet][coordenada.toUpperCase()]
 
-  if (celda === undefined) return ""
+  if (celda === undefined) { return SIN_DATO }
+  else {
+    if (celda.w.trim() === "") { return SIN_DATO }
+  }
   return celda.w.trim();
+}
+
+let valorCeldaFecha = (coordenada) => {
+
+  const formato_comun = valorCelda(coordenada)
+
+  // esta onda 14/01/2021
+  if(/^\d{2}-\d{2}-\d{4}$/.test(formato_comun))
+    return formato_comun
+
+  // esta onda 19:32:12 14 Jan, 2021
+  if(/^\d{2}:\d{2}:\d{2} \d{2} \w{3}, \d{4}$/.test(formato_comun)){
+    var date = new Date(formato_comun);
+    var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    let super_formato = date.toLocaleDateString('es-ES', options)
+    const regex = /\//g;
+    return super_formato.replace(regex, '-')
+  }
+  return formato_comun
 }

@@ -2,7 +2,7 @@ const http = require("http");
 const despachante = require("./despachante");
 const { exec } = require('child_process');
 
-const host = 'localhost';
+const host = '0.0.0.0';
 const port = 8000;
 
 const requestListener = function(req, res) {
