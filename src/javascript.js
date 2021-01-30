@@ -86,7 +86,7 @@ function tablahtml(excelRows) {
     //Add the data cells.
     let cell
     for (let celda of keys) {
-      cell = row.insertCell(-1);      
+      cell = row.insertCell(-1);
       cell.innerHTML = fila[celda];
     }
   }
@@ -199,7 +199,20 @@ function datosClinica(fila) {
 }
 
 function datosEpidemiologia(fila) {
+
   let datos = []
+  datos.push({
+    nombre: "ocupacion",
+    valor: (valorCelda("ao" + fila) === "Si")? valorCelda("ap" + fila) + " - " + valorCelda("ar" + fila) : "no"
+  })
+  datos.push({
+    nombre: "¿viajo 15 dias FIS?",
+    valor: valorCeldaFecha("ab" + fila)
+  })
+  datos.push({
+    nombre: "¿convivie con contacto COVID+?",
+    valor: valorCelda("ag" + fila)
+  })
   return datos
 }
 
