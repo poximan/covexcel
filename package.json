@@ -1,11 +1,11 @@
 {
   "name": "covexcel",
   "version": "1.0.0",
-  "description": "",
+  "description": "parser para planillas excel, sobre cargado de potenciales casos covid",
   "main": "index.html",
   "scripts": {
-    "start": "node index.js",
-    "build": "parcel build index.html"
+    "prestart": "atom",
+    "start": "node index.js"
   },
-  "keywords": []
+  "keywords": ["parser","excel","argentina","snvs","covid","sisa"]
 }

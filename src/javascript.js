@@ -86,7 +86,7 @@ function tablahtml(excelRows) {
     //Add the data cells.
     let cell
     for (let celda of keys) {
-      cell = row.insertCell(-1);
+      cell = row.insertCell(-1);      
       cell.innerHTML = fila[celda];
     }
   }
@@ -143,7 +143,7 @@ function datosCiudadano(fila) {
   ){
     for (var i = 0; i < arr_nombres.length; i++){
       datos.push({
-        nombre: `conviv. ${i+1} -> ${arr_relaciones[i]}`, // relacion
+        nombre: `conviv.${i+1} -> ${arr_relaciones[i]}`, // relacion
         valor: arr_nombres[i] + `, ${arr_edades[i]} años`
       })
     }
@@ -238,6 +238,10 @@ let valorCelda = (coordenada) => {
   else {
     if (celda.w.trim() === "") { return SIN_DATO }
   }
+
+  if(/^\d{1}\..*(\+\d{2})$/.test(celda.w))
+    return celda.v
+
   return celda.w.trim();
 }
 
@@ -245,11 +249,11 @@ let valorCeldaFecha = (coordenada) => {
 
   const formato_comun = valorCelda(coordenada)
 
-  // esta onda 14/01/2021
+  // onda 14/01/2021 -> sigue como viene
   if(/^\d{2}-\d{2}-\d{4}$/.test(formato_comun))
     return formato_comun
 
-  // esta onda 19:32:12 14 Jan, 2021
+  // onda 19:32:12 14 Jan, 2021 -> recuperar lo util
   if(/^\d{2}:\d{2}:\d{2} \d{2} \w{3}, \d{4}$/.test(formato_comun)){
     var date = new Date(formato_comun);
     var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -257,5 +261,12 @@ let valorCeldaFecha = (coordenada) => {
     const regex = /\//g;
     return super_formato.replace(regex, '-')
   }
+
+  // onda 2020/12/31 -> darlo vuelta
+  const una_sola_fecha = formato_comun.substring(0,10)
+  if(/^\d{4}-\d{2}-\d{2}$/.test(una_sola_fecha))
+    return una_sola_fecha.substring(8) + "-" + una_sola_fecha.substring(5,7) + "-" + una_sola_fecha.substring(0,4)
+
+  // sale con SIN_DATO
   return formato_comun
 }
