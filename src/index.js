@@ -15,10 +15,28 @@ const port = config.server.port;
 
 const requestListener = function(req, res) {
 
-  despachante.despachar(req, res, (exito) => {
-    if (!exito)
-      console.log(req.url)
-  })
+  if (req.method === 'POST') {
+
+    let body = '';
+
+    req.on('data', chunk => {
+        body += chunk.toString();
+    });
+
+    req.on('end', () => {
+
+        console.log(JSON.parse(body));
+
+        ret = true
+        res.writeHead(200)
+        res.end()
+    });
+  }
+  else
+    despachante.despachar(req, res, (exito) => {
+      if (!exito)
+        console.log(req.url)
+    })
 }
 
 const server = http.createServer(requestListener);

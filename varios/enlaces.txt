@@ -10,3 +10,6 @@ https://stackoverflow.com/questions/29076574/how-to-create-an-array-with-a-singl
 https://github.com/andyearnshaw/Intl.js/issues/79
 https://stackoverflow.com/questions/22348705/best-way-to-store-db-config-in-node-js-express-app
 https://stackoverflow.com/questions/987142/make-gitignore-ignore-everything-except-a-few-files
+https://developer.mozilla.org/es/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
+https://nodejs.dev/learn/make-an-http-post-request-using-nodejs
+https://itnext.io/how-to-handle-the-post-request-body-in-node-js-without-using-a-framework-cd2038b93190

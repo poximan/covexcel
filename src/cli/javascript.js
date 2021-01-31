@@ -109,6 +109,17 @@ function cargarColumnas(fila) {
 
   const epidemiologia = datosEpidemiologia(fila)
   cargarDatos(epidemiologia, COLUMNAS[3])
+
+  enviarAlSrv([ciudadano, evento, clinica, epidemiologia])
+}
+
+const enviarAlSrv = (datos) => {
+
+  var output = document.getElementById("output");
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/index.js", true)
+  xhr.send(JSON.stringify(datos));
 }
 
 function datosCiudadano(fila) {
@@ -216,7 +227,7 @@ function datosEpidemiologia(fila) {
   return datos
 }
 
-let limpiarColumnas = () => {
+const limpiarColumnas = () => {
 
   COLUMNAS.forEach(titulo => {
     const element = document.getElementById(titulo);
@@ -228,11 +239,11 @@ let limpiarColumnas = () => {
   });
 }
 
-let letraCapital = (string) => {
+const letraCapital = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-let cargarDatos = (datos, columna) => {
+const cargarDatos = (datos, columna) => {
 
   const element = document.getElementById(columna);
 
@@ -244,7 +255,7 @@ let cargarDatos = (datos, columna) => {
   });
 }
 
-let valorCelda = (coordenada) => {
+const valorCelda = (coordenada) => {
   const celda = workbook.Sheets[firstSheet][coordenada.toUpperCase()]
 
   if (celda === undefined) { return SIN_DATO }
@@ -258,7 +269,7 @@ let valorCelda = (coordenada) => {
   return celda.w.trim();
 }
 
-let valorCeldaFecha = (coordenada) => {
+const valorCeldaFecha = (coordenada) => {
 
   const formato_comun = valorCelda(coordenada)
 
