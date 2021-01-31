@@ -1,0 +1,12 @@
+https://stackoverflow.com/questions/56285643/loading-javascript-file-in-node
+https://stackoverflow.com/questions/8238407/how-to-parse-excel-xls-file-in-javascript-html5
+https://stackoverflow.com/questions/28782074/excel-to-json-javascript-code
+https://www.aspsnippets.com/Articles/Read-Parse-Excel-File-XLS-and-XLSX-using-JavaScript.aspx
+https://stackoverflow.com/questions/38397894/get-json-key-name/38397927
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration
+https://stackoverflow.com/questions/24977110/how-to-count-the-number-of-elements-in-this-json-object
+https://www.w3schools.com/howto/howto_css_two_columns.asp
+https://stackoverflow.com/questions/29076574/how-to-create-an-array-with-a-single-element-or-an-array-of-elements
+https://github.com/andyearnshaw/Intl.js/issues/79
+https://stackoverflow.com/questions/22348705/best-way-to-store-db-config-in-node-js-express-app
+https://stackoverflow.com/questions/987142/make-gitignore-ignore-everything-except-a-few-files

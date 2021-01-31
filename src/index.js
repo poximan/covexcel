@@ -1,9 +1,17 @@
 const http = require("http");
-const despachante = require("./despachante");
 const { exec } = require('child_process');
 
-const host = '0.0.0.0';
-const port = 8000;
+const despachante = require("./despachante");
+
+var env = process.env.NODE_ENV || 'development';
+var config = require("../sensible/config")[env];
+
+const host = config.server.host;
+const port = config.server.port;
+
+/*
+------------------------------------------------------------------
+*/
 
 const requestListener = function(req, res) {
 

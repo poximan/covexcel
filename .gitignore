@@ -1,2 +1,3 @@
 node_modules/
-varios/
+sensible/*
+!sensible/_config.js

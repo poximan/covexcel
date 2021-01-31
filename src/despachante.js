@@ -1,4 +1,9 @@
 const fs = require('fs').promises;
+
+/*
+------------------------------------------------------------------
+*/
+
 let ret = false
 
 exports.despachar = (req, res, cb) => {
@@ -9,7 +14,7 @@ exports.despachar = (req, res, cb) => {
 
     ret = true
 
-    fs.readFile(__dirname + "/index.html")
+    fs.readFile(__dirname + "/cli/index.html")
     .then(contents => {
       res.setHeader("Content-Type", "text/html")
       res.writeHead(200)
@@ -22,11 +27,11 @@ exports.despachar = (req, res, cb) => {
     });
   }
 
-  if (req.url === '/src/javascript.js') {
+  if (req.url === '/cli/javascript.js') {
 
     ret = true
 
-    fs.readFile(__dirname + "/src/javascript.js")
+    fs.readFile(__dirname + "/cli/javascript.js")
     .then(contents => {
       res.setHeader("Content-Type", "application/javascript")
       res.writeHead(200)
@@ -39,11 +44,11 @@ exports.despachar = (req, res, cb) => {
     });
   }
 
-  if (req.url === '/src/styles.css') {
+  if (req.url === '/cli/styles.css') {
 
     ret = true
 
-    fs.readFile(__dirname + "/src/styles.css")
+    fs.readFile(__dirname + "/cli/styles.css")
     .then(contents => {
       res.setHeader("Content-Type", "text/css")
       res.writeHead(200)
@@ -56,11 +61,11 @@ exports.despachar = (req, res, cb) => {
     });
   }
 
-  if (req.url === '/src/xlsx.full.min.js') {
+  if (req.url === '/cli/xlsx.full.min.js') {
 
     ret = true
 
-    fs.readFile(__dirname + "/src/xlsx.full.min.js")
+    fs.readFile(__dirname + "/cli/xlsx.full.min.js")
     .then(contents => {
       res.setHeader("Content-Type", "application/javascript")
       res.writeHead(200)
