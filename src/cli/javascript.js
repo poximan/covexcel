@@ -221,7 +221,7 @@ function datosEpidemiologia(fila) {
     valor: valorCeldaFecha("ab" + fila)
   })
   datos.push({
-    nombre: "¿convivie con contacto COVID+?",
+    nombre: "¿convive con contacto COVID+?",
     valor: valorCelda("ag" + fila)
   })
   return datos

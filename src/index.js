@@ -1,3 +1,4 @@
+
 const http = require("http");
 const { exec } = require('child_process');
 
@@ -26,11 +27,7 @@ const requestListener = function(req, res) {
 
     req.on('end', () => {
 
-        const ficha = JSON.parse(body)
-        console.log(ficha);
-        getCiudadano(ficha)
-
-        ret = true
+        getCiudadano(JSON.parse(body))
         res.writeHead(200)
         res.end()
     });

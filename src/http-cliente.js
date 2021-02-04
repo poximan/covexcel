@@ -1,17 +1,25 @@
-const https = require('https');
+var env = process.env.NODE_ENV || 'development';
+var config = require("../sensible/config")[env];
+var conexion = require("../sensible/config")
 
-exports.getCiudadano = () => {
+const https = require('https')
 
-  https.get('https://encrypted.google.com/', (res) => {
-    console.log('statusCode:', res.statusCode);
-    console.log('headers:', res.headers);
+exports.getCiudadano = (ficha) => {
+
+  let ws042 = config.ws042
+
+  const parametros = `?nrodoc=26334344&usuario=${conexion.usuario}&clave=${conexion.clave}`
+  ws042 = ws042.replace("/{parametros}", parametros)
+
+  console.log(`pregunta GET -> ${ws042}`);
+
+  https.get(ws042, (res) => {
 
     res.on('data', (d) => {
-      process.stdout.write(d);
+      process.stdout.write(d)
     });
 
   }).on('error', (e) => {
-    console.error(e);
+    console.error(e)
   });
-
 }
