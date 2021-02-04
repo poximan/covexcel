@@ -2,6 +2,7 @@ const http = require("http");
 const { exec } = require('child_process');
 
 const despachante = require("./despachante");
+const { getCiudadano } = require("./http-cliente");
 
 var env = process.env.NODE_ENV || 'development';
 var config = require("../sensible/config")[env];
@@ -25,7 +26,9 @@ const requestListener = function(req, res) {
 
     req.on('end', () => {
 
-        console.log(JSON.parse(body));
+        const ficha = JSON.parse(body)
+        console.log(ficha);
+        getCiudadano(ficha)
 
         ret = true
         res.writeHead(200)
