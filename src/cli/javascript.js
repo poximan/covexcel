@@ -2,7 +2,7 @@ let workbook
 let firstSheet
 
 const SIN_DATO = "SIN_DATO"
-const COLUMNAS = ["ciudadano","evento","clinica","epidemiologia"]
+const COLUMNAS = ["ciudadano", "evento", "clinica", "epidemiologia"]
 
 function Upload() {
   //Reference the FileUpload element.
@@ -147,12 +147,12 @@ function datosCiudadano(fila) {
   const arr_edades = valorCelda("al" + fila).split("\r\n\r\n");
   const arr_relaciones = valorCelda("am" + fila).split("\r\n\r\n");
 
-  if(
+  if (
     (arr_nombres.length === arr_edades.length) &&
     (arr_nombres.length === arr_relaciones.length) &&
     arr_nombres[0] != ''
-  ){
-    for (var i = 0; i < arr_nombres.length; i++){
+  ) {
+    for (var i = 0; i < arr_nombres.length; i++) {
       datos.push({
         nombre: `conviv.${i+1} -> ${arr_relaciones[i]}`, // relacion
         valor: arr_nombres[i] + `, ${arr_edades[i]} años`
@@ -175,7 +175,7 @@ function datosEvento(fila) {
   })
   datos.push({
     nombre: "¿contacto COVID+ ult.15 dias?",
-    valor: (valorCelda("ac" + fila) === "Si")? "si" : "no. comunitario"
+    valor: (valorCelda("ac" + fila) === "Si") ? "si" : "no. comunitario"
   })
   return datos
 }
@@ -192,7 +192,7 @@ function datosClinica(fila) {
     valor: valorCeldaFecha("w" + fila)
   })
 
-  const arr_sintomas= valorCelda("u" + fila).split("\n");
+  const arr_sintomas = valorCelda("u" + fila).split("\n");
   for (var i = 0; i < arr_sintomas.length; i++)
     datos.push({
       nombre: `sint.${i+1}`,
@@ -200,7 +200,7 @@ function datosClinica(fila) {
     })
 
   const arr_comorbilidades = valorCelda("x" + fila).split("\n");
-  for (var i = 0; i < arr_comorbilidades.length; i++){
+  for (var i = 0; i < arr_comorbilidades.length; i++) {
     datos.push({
       nombre: `comorb.${i+1}`,
       valor: arr_comorbilidades[i]
@@ -214,7 +214,7 @@ function datosEpidemiologia(fila) {
   let datos = []
   datos.push({
     nombre: "ocupacion",
-    valor: (valorCelda("ao" + fila) === "Si")? valorCelda("ap" + fila) + " - " + valorCelda("ar" + fila) : "no"
+    valor: (valorCelda("ao" + fila) === "Si") ? valorCelda("ap" + fila) + " - " + valorCelda("ar" + fila) : "no"
   })
   datos.push({
     nombre: "¿viajo 15 dias FIS?",
@@ -258,12 +258,15 @@ const cargarDatos = (datos, columna) => {
 const valorCelda = (coordenada) => {
   const celda = workbook.Sheets[firstSheet][coordenada.toUpperCase()]
 
-  if (celda === undefined) { return SIN_DATO }
-  else {
-    if (celda.w.trim() === "") { return SIN_DATO }
+  if (celda === undefined) {
+    return SIN_DATO
+  } else {
+    if (celda.w.trim() === "") {
+      return SIN_DATO
+    }
   }
 
-  if(/^\d{1}\..*(\+\d{2})$/.test(celda.w))
+  if (/^\d{1}\..*(\+\d{2})$/.test(celda.w))
     return celda.v
 
   return celda.w.trim();
@@ -274,22 +277,26 @@ const valorCeldaFecha = (coordenada) => {
   const formato_comun = valorCelda(coordenada)
 
   // onda 14/01/2021 -> sigue como viene
-  if(/^\d{2}-\d{2}-\d{4}$/.test(formato_comun))
+  if (/^\d{2}-\d{2}-\d{4}$/.test(formato_comun))
     return formato_comun
 
   // onda 19:32:12 14 Jan, 2021 -> recuperar lo util
-  if(/^\d{2}:\d{2}:\d{2} \d{2} \w{3}, \d{4}$/.test(formato_comun)){
+  if (/^\d{2}:\d{2}:\d{2} \d{2} \w{3}, \d{4}$/.test(formato_comun)) {
     var date = new Date(formato_comun);
-    var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    var options = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    };
     let super_formato = date.toLocaleDateString('es-ES', options)
     const regex = /\//g;
     return super_formato.replace(regex, '-')
   }
 
   // onda 2020/12/31 -> darlo vuelta
-  const una_sola_fecha = formato_comun.substring(0,10)
-  if(/^\d{4}-\d{2}-\d{2}$/.test(una_sola_fecha))
-    return una_sola_fecha.substring(8) + "-" + una_sola_fecha.substring(5,7) + "-" + una_sola_fecha.substring(0,4)
+  const una_sola_fecha = formato_comun.substring(0, 10)
+  if (/^\d{4}-\d{2}-\d{2}$/.test(una_sola_fecha))
+    return una_sola_fecha.substring(8) + "-" + una_sola_fecha.substring(5, 7) + "-" + una_sola_fecha.substring(0, 4)
 
   // sale con SIN_DATO
   return formato_comun

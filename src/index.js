@@ -1,4 +1,3 @@
-
 const http = require("http");
 const { exec } = require('child_process');
 
@@ -22,17 +21,16 @@ const requestListener = function(req, res) {
     let body = '';
 
     req.on('data', chunk => {
-        body += chunk.toString();
+      body += chunk.toString();
     });
 
     req.on('end', () => {
 
-        getCiudadano(JSON.parse(body))
-        res.writeHead(200)
-        res.end()
+      getCiudadano(JSON.parse(body))
+      res.writeHead(200)
+      res.end()
     });
-  }
-  else
+  } else
     despachante.despachar(req, res, (exito) => {
       if (!exito)
         console.log(req.url)
@@ -45,7 +43,7 @@ server.listen(port, host, () => {
 
   console.log(`Server is running on http://${host}:${port}`);
 
-  exec("C:/\"Program Files\"/\"Mozilla Firefox\"/firefox.exe "+`${host}:${port}`, (error, stdout, stderr) => {
+  exec("C:/\"Program Files\"/\"Mozilla Firefox\"/firefox.exe " + `${host}:${port}`, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;

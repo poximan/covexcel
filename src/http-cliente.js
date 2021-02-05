@@ -8,7 +8,7 @@ exports.getCiudadano = (ficha) => {
 
   let ws042 = config.ws042
 
-  const parametros = `?nrodoc=26334344&usuario=${conexion.usuario}&clave=${conexion.clave}`
+  const parametros = `?nrodoc=30976216&usuario=${conexion.usuario}&clave=${conexion.clave}`
   ws042 = ws042.replace("/{parametros}", parametros)
 
   console.log(`pregunta GET -> ${ws042}`);

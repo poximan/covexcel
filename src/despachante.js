@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 
 /*
 ------------------------------------------------------------------
@@ -11,89 +11,74 @@ exports.despachar = (req, res, cb) => {
   ret = false
 
   if (req.url === '/') {
-
     ret = true
 
-    fs.readFile(__dirname + "/cli/index.html")
-    .then(contents => {
+    fs.readFile(__dirname + "/cli/index.html", 'utf8', (err, data) => {
+      if (err) {
+        res.writeHead(500)
+        res.end(err)
+        return
+      }
       res.setHeader("Content-Type", "text/html")
       res.writeHead(200)
-      res.end(contents)
+      res.end(data)
     })
-    .catch(err => {
-      res.writeHead(500)
-      res.end(err)
-      return
-    });
   }
-
   if (req.url === '/cli/javascript.js') {
-
     ret = true
 
-    fs.readFile(__dirname + "/cli/javascript.js")
-    .then(contents => {
-      res.setHeader("Content-Type", "application/javascript")
+    fs.readFile(__dirname + "/cli/javascript.js", 'utf8', (err, data) => {
+      if (err) {
+        res.writeHead(500)
+        res.end(err)
+        return
+      }
+      res.setHeader("Content-Type", "text/javascript")
       res.writeHead(200)
-      res.end(contents)
+      res.end(data)
     })
-    .catch(err => {
-      res.writeHead(500)
-      res.end(err)
-      return
-    });
   }
-
   if (req.url === '/cli/styles.css') {
-
     ret = true
 
-    fs.readFile(__dirname + "/cli/styles.css")
-    .then(contents => {
+    fs.readFile(__dirname + "/cli/styles.css", 'utf8', (err, data) => {
+      if (err) {
+        res.writeHead(500)
+        res.end(err)
+        return
+      }
       res.setHeader("Content-Type", "text/css")
       res.writeHead(200)
-      res.end(contents)
+      res.end(data)
     })
-    .catch(err => {
-      res.writeHead(500)
-      res.end(err)
-      return
-    });
   }
-
   if (req.url === '/cli/xlsx.full.min.js') {
-
     ret = true
 
-    fs.readFile(__dirname + "/cli/xlsx.full.min.js")
-    .then(contents => {
+    fs.readFile(__dirname + "/cli/xlsx.full.min.js", 'utf8', (err, data) => {
+      if (err) {
+        res.writeHead(500)
+        res.end(err)
+        return
+      }
       res.setHeader("Content-Type", "application/javascript")
       res.writeHead(200)
-      res.end(contents)
+      res.end(data)
     })
-    .catch(err => {
-      res.writeHead(500)
-      res.end(err)
-      return
-    });
   }
-
   if (req.url === '/favicon.ico') {
-
     ret = true
 
-    fs.readFile(__dirname + "/img/chubut.jpg")
-    .then(contents => {
+    fs.readFile(__dirname + "/img/chubut.jpg", 'utf8', (err, data) => {
+      if (err) {
+        res.writeHead(500)
+        res.end(err)
+        return
+      }
       res.setHeader("Content-Type", "image/jpeg")
       res.writeHead(200)
-      res.end(contents)
+      res.end(data)
     })
-    .catch(err => {
-      res.writeHead(500)
-      res.end(err)
-      return
-    });
   }
-
   cb(ret)
 }
