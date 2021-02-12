@@ -1,8 +1,8 @@
-var env = process.env.NODE_ENV || 'development';
-var config = require("../sensible/config")[env];
-var conexion = require("../sensible/config")
+const https = require('https');
 
-const https = require('https')
+const env = process.env.NODE_ENV || 'development';
+const config = require("../sensible/config")[env];
+const { conexion } = require("../sensible/config")
 
 exports.getCiudadano = (ficha) => {
 

@@ -1,6 +1,8 @@
 var config = {
-  usuario: ...,
-  clave: ...,
+  conexion: {
+    usuario: "...",
+    clave: "..."
+  },
   development: {
     server: {
       host: '127.0.0.1',
